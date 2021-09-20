@@ -13,8 +13,7 @@ import {ProductsPaginated} from '../../shared/models/products-paginated';
 export class ProductEffects {
   constructor(
     private actions$: Actions,
-    private apiService: ApiService,
-    private store: Store<IAppState>
+    private apiService: ApiService
   ) {
   }
 
