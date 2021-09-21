@@ -12,8 +12,3 @@ export const selectErrors = createSelector(
   ProductState,
   fromProduct.getErrors
 );
-
-export const selectPaginatedProducts = createSelector(
-  ProductState,
-  fromProduct.getPaginatedProducts
-);

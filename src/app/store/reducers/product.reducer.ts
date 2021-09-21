@@ -3,7 +3,6 @@ import {Product} from '../../shared/models/products';
 import {Action, createReducer, on} from '@ngrx/store';
 
 import * as ProductActions from '../actions/product.actions';
-import {ProductsPaginated} from '../../shared/models/products-paginated';
 
 export interface IProductState extends EntityState<Product> {
   selectedProductId: number | null;
@@ -13,7 +12,9 @@ export interface IProductState extends EntityState<Product> {
   successMessage: string;
   errors: any;
   selectedProduct: Product;
-  paginatedProducts: ProductsPaginated;
+  pageIndex: number;
+  pageSize: number;
+  count: number;
 }
 
 export const adapter: EntityAdapter<Product> = createEntityAdapter<Product>();
@@ -26,7 +27,9 @@ export const initialState: IProductState = adapter.getInitialState({
   successMessage: '',
   errors: null,
   selectedProduct: null,
-  paginatedProducts: null
+  pageIndex: 0,
+  pageSize: 0,
+  count: 0
 });
 
 const reducer = createReducer(
@@ -35,30 +38,23 @@ const reducer = createReducer(
     return {...state};
   }),
   on(ProductActions.loadProductsSuccess, (state, {payload}) => {
-    return adapter.setAll(payload, state);
+    return adapter.addMany(payload.data, {
+      ...state,
+      isLoading: false,
+      pageSize: payload.pageSize,
+      pageIndex: payload.pageIndex,
+      count: payload.count
+    });
   }),
   on(ProductActions.loadProductsFail, (state, {payload}) => {
     return {...state, errorMessage: payload};
   }),
-  on(ProductActions.loadPaginatedProducts, (state) => {
-    return {...state};
-  }),
-  on(ProductActions.loadPaginatedProductsSuccess, (state, {payload}) => {
-    /*  const paginatedProducts = {...state.paginatedProducts};
-      paginatedProducts.pageIndex = payload.pageIndex;
-      paginatedProducts.pageSize = payload.pageSize;
-      paginatedProducts.data = [...state.paginatedProducts.data, payload.data];*/
-    return {...state, paginatedProducts: payload};
-  }),
-  on(ProductActions.loadPaginatedProductsFail, (state, {payload}) => {
-    return {...state, errorMessage: payload};
-  })
 );
 
 export function productReducer(
   state: IProductState | undefined,
   action: Action
-) {
+): IProductState {
   return reducer(state, action);
 }
 
@@ -88,5 +84,3 @@ export const selectProductTotal = selectTotal;
 export const getErrors = (state: IProductState) => state.errors;
 export const getIsLoading = (state: IProductState) => state.isLoading;
 export const getSelectedProduct = (state: IProductState) => state.selectedProduct;
-export const getPaginatedProducts = (state: IProductState) => state.paginatedProducts;
-
