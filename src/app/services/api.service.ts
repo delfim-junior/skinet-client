@@ -3,7 +3,8 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 
 import {API_URL, environment} from '../../environments/environment';
-import {Pagination} from '../shared/models/pagination';
+import {RequestParam} from '../shared/models/request-param';
+import {httpParamsHelper} from '../shared/helpers/httpParamsHelper';
 
 // import {AuthService} from './auth.service';
 
@@ -17,16 +18,9 @@ export class ApiService {
   constructor(private http: HttpClient) {
   }
 
-  public get<T>(url: string, pagination: Pagination = null): Observable<any> {
-    /*const token = 'Bearer ' + localStorage.getItem('token');
-    const options = {      headers: new HttpHeaders().set('Authorization', token).set('Content-Type', 'application/json'),    };
-*/
-    if (pagination !== null) {
-      const params = new HttpParams()
-        .set('pageSize', pagination.pageSize.toString())
-        .set('pageIndex', pagination.pageIndex.toString());
-
-      return this.http.get<T>(this.normalizeUrl(url), {params});
+  public get<T>(url: string, requestParam: RequestParam = null): Observable<any> {
+    if (requestParam !== null) {
+      return this.http.get<T>(this.normalizeUrl(url), {params: httpParamsHelper(requestParam)});
     }
     return this.http.get<T>(this.normalizeUrl(url));
   }
