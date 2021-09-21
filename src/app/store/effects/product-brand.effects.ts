@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {ApiService} from '../../services/api.service';
-import {Store} from '@ngrx/store';
-import {IAppState} from '../reducers';
 import * as ProductBrandActions from '../actions/product-brand.actions';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import {ProductBrand} from '../../shared/models/product-brand';
@@ -14,7 +12,6 @@ export class ProductBrandEffects {
   constructor(
     private actions$: Actions,
     private apiService: ApiService,
-    private store: Store<IAppState>
   ) {
   }
 

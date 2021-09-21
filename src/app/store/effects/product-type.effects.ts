@@ -1,8 +1,6 @@
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import * as ProductTypeActions from '../actions/product-type.actions';
 import {ApiService} from '../../services/api.service';
-import {Store} from '@ngrx/store';
-import {IAppState} from '../reducers';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import {ProductType} from '../../shared/models/product-type';
 import {of} from 'rxjs';
@@ -13,7 +11,6 @@ export class ProductTypeEffects {
   constructor(
     private actions$: Actions,
     private apiService: ApiService,
-    private store: Store<IAppState>
   ) {
   }
 
