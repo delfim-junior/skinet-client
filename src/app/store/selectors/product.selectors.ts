@@ -12,3 +12,18 @@ export const selectErrors = createSelector(
   ProductState,
   fromProduct.getErrors
 );
+
+export const selectPageIndex = createSelector(
+  ProductState,
+  fromProduct.getPageIndex
+);
+
+export const selectPageSize = createSelector(
+  ProductState,
+  fromProduct.getPageSize
+);
+
+export const selectTotalCount = createSelector(
+  ProductState,
+  fromProduct.getTotalCount
+);

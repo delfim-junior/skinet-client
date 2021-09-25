@@ -38,7 +38,7 @@ const reducer = createReducer(
     return {...state};
   }),
   on(ProductActions.loadProductsSuccess, (state, {payload}) => {
-    return adapter.addMany(payload.data, {
+    return adapter.setAll(payload.data, {
       ...state,
       isLoading: false,
       pageSize: payload.pageSize,
@@ -84,3 +84,6 @@ export const selectProductTotal = selectTotal;
 export const getErrors = (state: IProductState) => state.errors;
 export const getIsLoading = (state: IProductState) => state.isLoading;
 export const getSelectedProduct = (state: IProductState) => state.selectedProduct;
+export const getPageSize = (state: IProductState) => state.pageSize;
+export const getPageIndex = (state: IProductState) => state.pageIndex;
+export const getTotalCount = (state: IProductState) => state.count;

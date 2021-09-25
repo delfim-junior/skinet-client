@@ -4,6 +4,7 @@ import {ShopComponent} from './shop.component';
 import {ProductItemComponent} from './product-item/product-item.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SharedModule} from '../shared/shared.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -14,11 +15,12 @@ import {SharedModule} from '../shared/shared.module';
   exports: [
     ShopComponent
   ],
-  imports: [
-    CommonModule,
-    BrowserAnimationsModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        BrowserAnimationsModule,
+        SharedModule,
+        ReactiveFormsModule
+    ]
 })
 export class ShopModule {
 }

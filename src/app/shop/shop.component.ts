@@ -11,7 +11,9 @@ import {ProductBrand} from '../shared/models/product-brand';
 import {ProductType} from '../shared/models/product-type';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {loadProducts} from '../store/actions/product.actions';
-import {selectAllProducts} from '../store/selectors/product.selectors';
+import {selectAllProducts, selectPageIndex, selectPageSize, selectTotalCount} from '../store/selectors/product.selectors';
+import {PageChangedEvent} from 'ngx-bootstrap/pagination';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-shop',
@@ -21,23 +23,27 @@ import {selectAllProducts} from '../store/selectors/product.selectors';
     trigger('fade', [
       state('void', style({opacity: 0})),
       transition('void <=> *', [
-        animate(200)
+        animate(300)
       ]),
     ])
   ]
 })
 export class ShopComponent implements OnInit {
+  pageIndex$ = this.store.pipe(select(selectPageIndex));
+  pageSize$ = this.store.pipe(select(selectPageSize));
+  totalCount$ = this.store.pipe(select(selectTotalCount));
+
   products: Product[];
-  selectedProductBrandId = 0;
-  selectedProductTypeId = 0;
   productBrands: ProductBrand[];
   productTypes: ProductType[];
-  sortSelected = 'name';
   sortOptions = [
     {name: 'Alphabetical', value: 'name'},
     {name: 'Price: Low to High', value: 'priceAsc'},
     {name: 'Price: High to Low', value: 'priceDesc'},
   ];
+  shopParams = new RequestParam();
+  form: FormGroup;
+
 
   constructor(private store: Store<IAppState>) {
   }
@@ -46,17 +52,13 @@ export class ShopComponent implements OnInit {
     this.getProducts();
     this.store.dispatch(loadProductBrands());
     this.store.dispatch(loadProducTypes());
+    this.form = new FormGroup({
+      searchInput: new FormControl()
+    });
   }
 
   getProducts(): void {
-    const productParam = new RequestParam();
-    productParam.pageIndex = 1;
-    productParam.pageSize = 50;
-    productParam.brandId = this.selectedProductBrandId;
-    productParam.typeId = this.selectedProductTypeId;
-    productParam.sort = this.sortSelected;
-
-    this.store.dispatch(loadProducts({payload: productParam}));
+    this.store.dispatch(loadProducts({payload: this.shopParams}));
 
     this.store.pipe(select(selectAllProducts)).subscribe(value => {
       this.products = value;
@@ -79,17 +81,30 @@ export class ShopComponent implements OnInit {
   }
 
   onSelectProductBrand(brandId: number): void {
-    this.selectedProductBrandId = brandId;
+    this.shopParams = {...this.shopParams, brandId};
     this.getProducts();
   }
 
   onSelectProductType(typeId: number): void {
-    this.selectedProductTypeId = typeId;
+    this.shopParams = {...this.shopParams, typeId};
     this.getProducts();
   }
 
   onSortSelected($event: Event): void {
-    this.sortSelected = ($event.target as HTMLInputElement).value;
+    this.shopParams = {...this.shopParams, sort: ($event.target as HTMLInputElement).value};
+    this.getProducts();
+  }
+
+  onPageChanged(event: PageChangedEvent): void {
+    this.shopParams = {...this.shopParams, pageIndex: event.page};
+    this.getProducts();
+  }
+
+  onSearchInputChange(): void {
+    console.log(this.form);
+  }
+
+  onReset(): void {
     this.getProducts();
   }
 

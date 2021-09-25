@@ -1,8 +1,9 @@
 export class RequestParam {
-  brandId: number;
-  typeId: number;
-  pageSize: number;
-  pageIndex: number;
-  sort: string;
+  brandId = 0;
+  typeId = 0;
+  pageSize = 6;
+  pageIndex = 1;
+  sort = 'name';
+  search: string;
 }
 
