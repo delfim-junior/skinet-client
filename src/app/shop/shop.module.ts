@@ -2,25 +2,24 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ShopComponent} from './shop.component';
 import {ProductItemComponent} from './product-item/product-item.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SharedModule} from '../shared/shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {ProductDetailComponent} from './product-detail/product-detail.component';
+import {ShopRoutingModule} from './shop-routing.module';
 
 
 @NgModule({
   declarations: [
     ShopComponent,
     ProductItemComponent,
+    ProductDetailComponent,
   ],
-  exports: [
-    ShopComponent
-  ],
-    imports: [
-        CommonModule,
-        BrowserAnimationsModule,
-        SharedModule,
-        ReactiveFormsModule
-    ]
+  imports: [
+    CommonModule,
+    SharedModule,
+    ReactiveFormsModule,
+    ShopRoutingModule
+  ]
 })
 export class ShopModule {
 }

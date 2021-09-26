@@ -49,6 +49,15 @@ const reducer = createReducer(
   on(ProductActions.loadProductsFail, (state, {payload}) => {
     return {...state, errorMessage: payload};
   }),
+  on(ProductActions.loadProductById, (state) => {
+    return {...state};
+  }),
+  on(ProductActions.loadProductByIdSuccess, (state, {payload}) => {
+    return {...state, selectedProduct: payload, isLoading: false};
+  }),
+  on(ProductActions.loadProductByIdFail, (state, {payload}) => {
+    return {...state, errorMessage: payload};
+  })
 );
 
 export function productReducer(

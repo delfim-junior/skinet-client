@@ -13,7 +13,7 @@ import {environment} from '../environments/environment';
 import {metaReducers, reducers} from './store/reducers';
 import {effects} from './store/effects';
 import {CoreModule} from './core/core.module';
-import {ShopModule} from './shop/shop.module';
+import {HomeModule} from './home/home.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,7 @@ import {ShopModule} from './shop/shop.module';
       logOnly: environment.production
     }),
     CoreModule,
-    ShopModule
+    HomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

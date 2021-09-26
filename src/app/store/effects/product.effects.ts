@@ -5,8 +5,6 @@ import * as ProductActons from '../actions/product.actions';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import {Product} from '../../shared/models/products';
 import {of} from 'rxjs';
-import {ProductsPaginated} from '../../shared/models/products-paginated';
-import {HttpParams} from '@angular/common/http';
 import {Pagination} from '../../shared/models/pagination';
 
 @Injectable()
@@ -27,6 +25,17 @@ export class ProductEffects {
             }
           ),
           catchError(err => of(ProductActons.loadProductsFail({payload: err})))
+        ))
+    )
+  );
+
+  loadProductById = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActons.loadProductById),
+      exhaustMap(action =>
+        this.apiService.get<Product>(`/Products/${action.payload}`).pipe(
+          map(product => ProductActons.loadProductByIdSuccess({payload: product})),
+          catchError(err => of(ProductActons.loadProductByIdFail({payload: err})))
         ))
     )
   );

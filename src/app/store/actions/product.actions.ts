@@ -8,12 +8,29 @@ export const loadProducts = createAction(
   props<{ payload: RequestParam }>()
 );
 
-export const loadProductsSuccess = createAction('[Product] Load Products Success',
-  props<{ payload: Pagination<Product[]> }>());
+export const loadProductsSuccess = createAction(
+  '[Product] Load Products Success',
+  props<{ payload: Pagination<Product[]> }>()
+);
 
 export const loadProductsFail = createAction(
   '[Product] Load Products Fail',
   props<{ payload: any }>());
+
+export const loadProductById = createAction(
+  '[Product] Load Product By Id',
+  props<{ payload: number }>()
+);
+
+export const loadProductByIdSuccess = createAction(
+  '[Product] Load Product By Id Success',
+  props<{ payload: Product }>()
+);
+
+export const loadProductByIdFail = createAction(
+  '[Product] Load Product By Id Fail',
+  props<{ payload: any }>()
+);
 
 /*export const loadPaginatedProducts = createAction(
   '[Product] Load Paginated Products',

@@ -8,9 +8,19 @@ export const selectAllProducts = createSelector(
   fromProduct.selectAllProduct
 );
 
+export const selectedProduct = createSelector(
+  ProductState,
+  fromProduct.getSelectedProduct
+);
+
 export const selectErrors = createSelector(
   ProductState,
   fromProduct.getErrors
+);
+
+export const selectLoading = createSelector(
+  ProductState,
+  fromProduct.getIsLoading
 );
 
 export const selectPageIndex = createSelector(
