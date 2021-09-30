@@ -23,6 +23,16 @@ export const selectLoading = createSelector(
   fromProduct.getIsLoading
 );
 
+export const selectIsSaving = createSelector(
+  ProductState,
+  fromProduct.getIsSaving
+);
+
+export const selectIsPayed = createSelector(
+  ProductState,
+  fromProduct.getPaymentStatus
+);
+
 export const selectPageIndex = createSelector(
   ProductState,
   fromProduct.getPageIndex
@@ -36,4 +46,14 @@ export const selectPageSize = createSelector(
 export const selectTotalCount = createSelector(
   ProductState,
   fromProduct.getTotalCount
+);
+
+export const selectBasketList = createSelector(
+  ProductState,
+  fromProduct.getBasketList
+);
+
+export const selectPaymentStatus = createSelector(
+  ProductState,
+  fromProduct.getPaymentStatus
 );

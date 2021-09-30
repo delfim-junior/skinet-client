@@ -2,6 +2,7 @@ import {createAction, props} from '@ngrx/store';
 import {Product} from '../../shared/models/products';
 import {RequestParam} from '../../shared/models/request-param';
 import {Pagination} from '../../shared/models/pagination';
+import {PaymentRequest} from '../../shared/models/payment-request';
 
 export const loadProducts = createAction(
   '[Product] Load Products',
@@ -32,6 +33,11 @@ export const loadProductByIdFail = createAction(
   props<{ payload: any }>()
 );
 
+export const addProductToBasket = createAction(
+  '[Product] Add to Basket',
+  props<{ payload: Product }>()
+);
+
 /*export const loadPaginatedProducts = createAction(
   '[Product] Load Paginated Products',
   props<{ payload: RequestParam }>()
@@ -58,4 +64,19 @@ export const addProductSuccess = createAction(
 export const addProductFail = createAction(
   '[Product] Add Product Fail',
   props<{ payload: any }>()
+);
+
+export const sendPayment = createAction(
+  '[Product] Send Payment',
+  props<{payload: PaymentRequest}>()
+);
+
+export const sendPaymentSuccess = createAction(
+  '[Product] Send Payment Success',
+  props<{payload: PaymentRequest}>()
+);
+
+export const sendPaymentFail = createAction(
+  '[Product] Send Payment Fail',
+  props<{payload: any}>()
 );

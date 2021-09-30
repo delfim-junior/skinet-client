@@ -15,6 +15,8 @@ export interface IProductState extends EntityState<Product> {
   pageIndex: number;
   pageSize: number;
   count: number;
+  basketList: Product[];
+  payed: boolean;
 }
 
 export const adapter: EntityAdapter<Product> = createEntityAdapter<Product>();
@@ -29,7 +31,9 @@ export const initialState: IProductState = adapter.getInitialState({
   selectedProduct: null,
   pageIndex: 0,
   pageSize: 0,
-  count: 0
+  count: 0,
+  basketList: [],
+  payed: false
 });
 
 const reducer = createReducer(
@@ -57,7 +61,21 @@ const reducer = createReducer(
   }),
   on(ProductActions.loadProductByIdFail, (state, {payload}) => {
     return {...state, errorMessage: payload};
-  })
+  }),
+  on(ProductActions.addProductToBasket, (state, {payload}) => {
+    const temp = [...state.basketList];
+    temp.push(payload);
+    return {...state, basketList: temp};
+  }),
+  on(ProductActions.sendPayment, (state) => {
+    return {...state, isSaving: true};
+  }),
+  on(ProductActions.sendPaymentSuccess, (state, {payload}) => {
+    return {...state, isSaving: false, payed: payload.totalPrice > 0};
+  }),
+  on(ProductActions.sendPaymentFail, (state, {payload}) => {
+    return {...state, isSaving: false, payed: payload.totalPrice > 0};
+  }),
 );
 
 export function productReducer(
@@ -92,7 +110,10 @@ export const selectProductTotal = selectTotal;
 
 export const getErrors = (state: IProductState) => state.errors;
 export const getIsLoading = (state: IProductState) => state.isLoading;
+export const getIsSaving = (state: IProductState) => state.isSaving;
 export const getSelectedProduct = (state: IProductState) => state.selectedProduct;
 export const getPageSize = (state: IProductState) => state.pageSize;
 export const getPageIndex = (state: IProductState) => state.pageIndex;
 export const getTotalCount = (state: IProductState) => state.count;
+export const getBasketList = (state: IProductState) => state.basketList;
+export const getPaymentStatus = (state: IProductState) => state.payed;

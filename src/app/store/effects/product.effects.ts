@@ -6,12 +6,14 @@ import {catchError, exhaustMap, map} from 'rxjs/operators';
 import {Product} from '../../shared/models/products';
 import {of} from 'rxjs';
 import {Pagination} from '../../shared/models/pagination';
+import {AlertifyService} from '../../services/alertify.service';
 
 @Injectable()
 export class ProductEffects {
   constructor(
     private actions$: Actions,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private alertifyService: AlertifyService
   ) {
   }
 
@@ -29,13 +31,24 @@ export class ProductEffects {
     )
   );
 
-  loadProductById = createEffect(() =>
+  loadProductById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProductActons.loadProductById),
       exhaustMap(action =>
         this.apiService.get<Product>(`/Products/${action.payload}`).pipe(
           map(product => ProductActons.loadProductByIdSuccess({payload: product})),
           catchError(err => of(ProductActons.loadProductByIdFail({payload: err})))
+        ))
+    )
+  );
+
+  pay = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActons.sendPayment),
+      exhaustMap(action =>
+        this.apiService.post<Product>(`/Products/pay`, action.payload).pipe(
+          map(product => ProductActons.sendPaymentSuccess({payload: product})),
+          catchError(err => of(ProductActons.sendPaymentFail({payload: err})))
         ))
     )
   );
